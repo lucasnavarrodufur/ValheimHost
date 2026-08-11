@@ -1,0 +1,10 @@
+{
+  "host_id": "",
+  "world_name": "mundonuevo",
+  "cloud_dir": ".",
+  "local_worlds_dir": "",
+  "lock_timeout_seconds": 180,
+  "heartbeat_seconds": 30,
+  "save_settle_seconds": 20,
+  "backups_to_keep": 10
+}

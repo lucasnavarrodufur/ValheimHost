@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+config.json
+server.lock.json
+worlds/
+backups/
+
+.tmp.drivedownload/
+.tmp.driveupload/
