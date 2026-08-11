@@ -1,6 +1,6 @@
 # ValheimHost - Guia Simple
 
-Este proyecto sirve para que vos y tus amigos puedan turnarse para hostear el mismo mundo de Valheim usando Google Drive.
+Este proyecto sirve para que un grupo de personas pueda turnarse para hostear el mismo mundo de Valheim usando Google Drive.
 
 Esta pensado para **Valheim normal desde Steam**, no para servidor dedicado. La persona que hostea abre el mundo desde el juego e invita a los demas por Steam.
 
@@ -26,9 +26,9 @@ mundonuevo.db
 mundonuevo.fwl
 ```
 
-## Que Tiene Que Hacer Tu Amigo
+## Que Tiene Que Hacer Cada Persona
 
-Tu amigo puede entrar al repo:
+Cada persona que quiera hostear puede entrar al repo:
 
 ```text
 https://github.com/lucasnavarrodufur/ValheimHost
