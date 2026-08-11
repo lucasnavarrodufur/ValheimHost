@@ -1,31 +1,17 @@
-# ValheimHost
+# ValheimHost - Guia Simple
 
-ValheimHost es un coordinador simple para compartir un mundo local de Valheim entre amigos usando una carpeta sincronizada en la nube, como Google Drive.
+Este proyecto sirve para que vos y tus amigos puedan turnarse para hostear el mismo mundo de Valheim usando Google Drive.
 
-Esta version esta pensada para jugar desde **Valheim normal en Steam**, hosteando desde el menu del juego e invitando amigos por Steam. No usa servidor dedicado.
+Esta pensado para **Valheim normal desde Steam**, no para servidor dedicado. La persona que hostea abre el mundo desde el juego e invita a los demas por Steam.
 
-## Para Que Sirve
+## Que Hace
 
-Cuando varias personas quieren turnarse para hostear el mismo mundo, el problema es evitar pisarse los archivos. ValheimHost hace tres cosas:
+ValheimHost se encarga de:
 
-- baja el mundo mas reciente antes de jugar;
-- crea un lock para que una sola persona hostee a la vez;
-- sube el mundo actualizado al terminar la sesion.
-
-## Flujo De Uso
-
-```text
-host-valheim.bat
-  -> toma lock
-  -> baja mundonuevo
-  -> vos abris Valheim y hosteas normal
-  -> al terminar apretas Enter
-  -> hace backup
-  -> sube el mundo
-  -> libera lock
-```
-
-## Archivos Del Mundo
+- bajar el mundo mas reciente antes de jugar;
+- evitar que dos personas hosteen al mismo tiempo;
+- subir el mundo actualizado cuando termina la sesion;
+- guardar backups automaticos.
 
 El mundo configurado es:
 
@@ -33,45 +19,98 @@ El mundo configurado es:
 mundonuevo
 ```
 
-ValheimHost sincroniza estos archivos:
+Los archivos reales del mundo son:
 
 ```text
 mundonuevo.db
 mundonuevo.fwl
-mundonuevo.db.old
-mundonuevo.fwl.old
 ```
 
-## Instalacion Rapida
+## Que Tiene Que Hacer Tu Amigo
 
-1. Instalar Python desde https://www.python.org/downloads/
-2. Marcar `Add python.exe to PATH` durante la instalacion.
-3. Descargar o clonar este proyecto.
-4. Copiar `config.portable.example.json` como `config.json`.
-5. Ajustar `world_name` si el mundo no se llama `mundonuevo`.
-
-Para probar:
-
-```powershell
-python valheim_host.py --config config.json doctor
-```
-
-Para hostear:
-
-```powershell
-python valheim_host.py --config config.json host
-```
-
-Tambien se puede usar doble clic:
+Tu amigo puede entrar al repo:
 
 ```text
-doctor-valheim.bat
-host-valheim.bat
+https://github.com/lucasnavarrodufur/ValheimHost
 ```
 
-## Configuracion Portatil Recomendada
+Y seguir estos pasos:
 
-Si el programa esta dentro de la carpeta compartida de Google Drive, `config.json` puede usar:
+1. Descargar el repo.
+2. Instalar Python.
+3. Tener sincronizada la carpeta compartida de Google Drive.
+4. Copiar los archivos del repo dentro de esa carpeta compartida.
+5. Copiar `config.portable.example.json` como `config.json`.
+6. Ejecutar `doctor-valheim.bat`.
+7. Ejecutar `host-valheim.bat` cuando quiera hostear.
+
+## 1. Instalar Python
+
+Descargar Python desde:
+
+```text
+https://www.python.org/downloads/
+```
+
+Durante la instalacion, marcar esta opcion:
+
+```text
+Add python.exe to PATH
+```
+
+Despues de instalar, cerrar y abrir de nuevo cualquier ventana de PowerShell o consola.
+
+## 2. Sincronizar La Carpeta De Google Drive
+
+La carpeta compartida tiene que aparecer como carpeta normal en el Explorador de archivos de Windows.
+
+No alcanza con verla desde el navegador.
+
+Pasos:
+
+1. Instalar Google Drive para computadoras.
+2. Aceptar la carpeta compartida.
+3. Abrir Google Drive desde el Explorador de archivos.
+4. Entrar a la carpeta compartida, por ejemplo `Server`.
+5. Marcarla como `Disponible sin conexion`, si aparece esa opcion.
+
+Rutas comunes de Google Drive en Windows:
+
+```text
+G:/Mi unidad/Server
+G:/My Drive/Server
+G:/Unidades compartidas/NombreDelDrive/Server
+G:/Shared drives/NombreDelDrive/Server
+```
+
+No importa si cada PC tiene una ruta distinta. El programa puede usar la carpeta donde esta `config.json`.
+
+## 3. Poner El Programa En La Carpeta Compartida
+
+Dentro de la carpeta compartida de Google Drive tienen que quedar estos archivos:
+
+```text
+Server/
+  valheim_host.py
+  config.json
+  host-valheim.bat
+  doctor-valheim.bat
+  README.md
+```
+
+Para crear `config.json`, copiar:
+
+```text
+config.portable.example.json
+```
+
+y renombrarlo como:
+
+```text
+config.json
+```
+
+El `config.json` recomendado es:
 
 ```json
 {
@@ -88,62 +127,97 @@ Si el programa esta dentro de la carpeta compartida de Google Drive, `config.jso
 
 Con esa configuracion:
 
-- `cloud_dir: "."` usa como nube la carpeta donde esta `config.json`;
-- `local_worlds_dir: ""` detecta automaticamente la carpeta local de mundos de Valheim del usuario actual;
-- `host_id: ""` usa el nombre de la PC.
+- `cloud_dir: "."` usa como nube la misma carpeta compartida;
+- `local_worlds_dir: ""` detecta automaticamente la carpeta local de mundos de Valheim;
+- `host_id: ""` usa automaticamente el nombre de la PC.
 
-## Google Drive
+## 4. Chequear Que Este Todo Bien
 
-La carpeta compartida tiene que estar sincronizada como carpeta normal en Windows. No alcanza con abrirla desde el navegador.
-
-Rutas comunes:
+Hacer doble clic en:
 
 ```text
-G:/Mi unidad/Server
-G:/My Drive/Server
-G:/Unidades compartidas/NombreDelDrive/Server
-G:/Shared drives/NombreDelDrive/Server
+doctor-valheim.bat
 ```
 
-Marcar la carpeta como `Disponible sin conexion` ayuda a evitar archivos virtuales sin descargar.
+Lo ideal es ver:
+
+```text
+cloud_dir: OK
+local_worlds_dir: OK
+lock: libre
+```
+
+Si `lock` aparece ocupado, otra persona esta hosteando o quedo una sesion anterior sin cerrar.
+
+## 5. Hostear
+
+Hacer doble clic en:
+
+```text
+host-valheim.bat
+```
+
+El programa va a:
+
+```text
+tomar lock -> bajar mundo -> esperar mientras jugas
+```
+
+Cuando la ventana diga que el mundo esta listo:
+
+1. Abrir Valheim desde Steam.
+2. Elegir el mundo `mundonuevo`.
+3. Activar la opcion de hostear desde el juego.
+4. Invitar amigos por Steam.
+5. Jugar normal.
+
+## 6. Terminar La Sesion
+
+Cuando terminen de jugar:
+
+1. Salir al menu principal o cerrar Valheim.
+2. Volver a la ventana de `host-valheim.bat`.
+3. Apretar Enter.
+4. Esperar a que termine de subir el mundo.
+
+El programa va a:
+
+```text
+esperar guardado -> crear backup -> subir mundo -> liberar lock
+```
+
+Cuando termina, otra persona ya puede hostear.
 
 ## Como Funciona El Lock
 
-El lock es un archivo llamado:
+El lock es un archivo que se crea en la carpeta compartida:
 
 ```text
 server.lock.json
 ```
 
-Mientras alguien hostea, ValheimHost actualiza ese archivo cada pocos segundos. Si otra persona intenta hostear, el programa ve que el lock esta fresco y corta.
+Mientras alguien hostea, el programa actualiza ese archivo cada pocos segundos. Si otra persona intenta hostear, el programa ve que el lock esta activo y no la deja avanzar.
 
-Si una PC se apaga mal, el lock vence despues de `lock_timeout_seconds`. Por defecto son 180 segundos.
+Si una PC se apaga mal, el lock vence despues de 180 segundos.
 
-## Estructura En La Carpeta Compartida
+## Regla Importante
+
+Siempre usar:
 
 ```text
-Server/
-  config.json
-  valheim_host.py
-  host-valheim.bat
-  doctor-valheim.bat
-  LEEME.md
-  server.lock.json
-  worlds/
-    mundonuevo/
-      mundonuevo.db
-      mundonuevo.fwl
-      mundonuevo.db.old
-      mundonuevo.fwl.old
-      manifest.json
-  backups/
-    mundonuevo/
-      mundonuevo-20260810-221500.zip
+host-valheim.bat
 ```
 
-## Notas
+antes de abrir el mundo.
 
-- Siempre abrir `host-valheim.bat` antes de hostear el mundo.
-- Al terminar, volver a la ventana y apretar Enter.
-- Esperar a que Google Drive termine de sincronizar antes de que hostee otra persona.
-- El lock no puede impedir que alguien abra Valheim manualmente sin usar este programa.
+Si alguien hostea manualmente sin usar el programa, ValheimHost no puede evitar conflictos ni asegurar que el mundo quede actualizado.
+
+## Resumen Corto
+
+```text
+1. Sincronizar carpeta de Google Drive
+2. Abrir doctor-valheim.bat para chequear
+3. Abrir host-valheim.bat para reservar el mundo
+4. Abrir Valheim y hostear mundonuevo
+5. Al terminar, volver al .bat y apretar Enter
+```
